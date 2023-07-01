@@ -1,30 +1,36 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
+import { useContext } from "react";
+import { CartQuantityContext } from "@/context/CartValueContext";
 
 const Navbar = () => {
   const [searchText, setSearchText] = useState("");
+  const { itemQuantity } = useContext(CartQuantityContext);
 
   // handle submit button
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setSearchText("");
   };
-  console.log(searchText);
+
   return (
-    <header className="shadow ">
-      <div className="flex flex-row  w-11/12 mx-auto justify-between items-center">
-        <Image
-          src="/images/shop-logo.png"
-          width={75}
-          height={75}
-          alt="logo"
-          priority={true}
-        />
+    <header className=" w-full bg-gray-300 z-10 fixed top-0">
+      <div className="flex  flex-row  w-11/12 mx-auto justify-between items-center ">
+        <Link href="/">
+          <Image
+            src="/images/shop-logo.png"
+            width={75}
+            height={75}
+            alt="logo"
+            priority={true}
+          />
+        </Link>
         <form className="flex gap-4 items-center" onSubmit={handleSearchSubmit}>
           <input
             type="search"
@@ -40,10 +46,11 @@ const Navbar = () => {
         </form>
         <div className="flex flex-row gap-4">
           <button>login</button>
-
-          <Badge badgeContent={4} color="warning">
-            <ShoppingCartOutlined />
-          </Badge>
+          <Link href="/cart">
+            <Badge badgeContent={itemQuantity} color="warning">
+              <ShoppingCartOutlined />
+            </Badge>
+          </Link>
         </div>
       </div>
     </header>

@@ -6,6 +6,8 @@ import React, { useState } from "react";
 import Shoe from "@/public/images/Men's Barklay Canvas Plain .jpeg";
 import BlackBoots from "@/public/images/black-boots.jpeg";
 import DesertBoots from "@/public/images/desert-boots.jpeg";
+import { products } from "@/lib/products";
+import Link from "next/link";
 
 export default function Home() {
   const [ratingValue, setRatingValue] = useState(2);
@@ -16,6 +18,7 @@ export default function Home() {
   const handleRatingChange = () => {
     setRatingValue(ratingValue);
   };
+
   return (
     <>
       <section className="w-10/12 mx-auto  h-[85vh]">
@@ -44,6 +47,26 @@ export default function Home() {
             />
           </div>
         </div>
+      </section>
+
+      {/* products array from the lib folder */}
+      <section className="w-11/12 mx-auto my-9 h-auto bg-white">
+        <h3 className="text-center text-2xl font-sans my-6 ">OUR PRODUCTS</h3>
+
+        <ul className="flex gap-12 justify-center mb-8 mt-3">
+          {products.map((product) => (
+            <li key={product.id}>
+              <Link href={`/product/${product.id}`}>
+                <Item
+                  value={ratingValue}
+                  imageSrc={product.images[0]}
+                  price={product.price}
+                  title={product.title}
+                />
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* featured products section */}
