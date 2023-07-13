@@ -56,7 +56,7 @@ export default function Home() {
         <ul className="flex gap-12 justify-center mb-8 mt-3">
           {products.map((product) => (
             <li key={product.id}>
-              <Link href={`/product/${product.id}`}>
+              <Link href={`/product/${product.slug}`}>
                 <Item
                   value={ratingValue}
                   imageSrc={product.images[0]}

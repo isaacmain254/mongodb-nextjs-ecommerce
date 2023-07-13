@@ -7,9 +7,9 @@ import BlackBoot from "@/public/images/desert-boots.jpeg";
 import { useRef } from "react";
 import { Rating } from "@mui/material";
 import Button from "@/components/Button";
-import { CartQuantityContext } from "@/context/CartValueContext";
 import { products } from "@/lib/products";
 import { useCartDispatch, useCartItems } from "@/utils/CartContextProvider";
+import { CartQuantityContext } from "@/utils/CartValueContext";
 
 let cartItemId = 1;
 
@@ -17,16 +17,21 @@ const Product = () => {
   const [currentImage, setCurrentImage] = useState();
   const imageref = useRef();
   const dispatch = useCartDispatch();
-  // const cartItems = useCartItems();
+  const cartItems = useCartItems();
 
   const { itemQuantity, setItemQuantity } = useContext(CartQuantityContext);
+  console.log(itemQuantity);
   // Get item id from the url
   const params = useParams();
-  const productId = params;
+  const Slug = params;
 
   // Increment quantity
   const handleItemQuantityIncrement = () => {
     setItemQuantity((value) => value + 1);
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: { ...product, quantity: itemQuantity },
+    });
   };
 
   // decrement item quantity
@@ -54,7 +59,7 @@ const Product = () => {
   };
 
   // get product data
-  const product = products.find(({ id }) => id.toString() === productId.id);
+  const product = products.find(({ slug }) => slug === Slug.slug);
   if (!product) {
     return <div>Page Not Found</div>;
   }
@@ -62,12 +67,10 @@ const Product = () => {
   // calling dispatch to update cart om 'ADD To CART' button click
   // calling dispatch to update cart om 'ADD To CART' button click
   function addToCartHandler() {
-    dispatch({
-      type: "add_to_cart",
-      id: cartItemId++,
-      title: product.title,
-      price: product.price,
-    });
+    dispatch((prevState) => ({
+      type: "ADD_TO_CART",
+      payload: { ...product, quantity: (cartItems.cart.quantity || 0) + 1 },
+    }));
   }
 
   return (
@@ -128,9 +131,11 @@ const Product = () => {
               >
                 -
               </p>
-              <p className="border-2 border-slate-400 px-3 text-xl font-semibold rounded cursor-pointer">
-                {itemQuantity}
-              </p>
+              {cartItems.cart.map((item) => (
+                <p className="border-2 border-slate-400 px-3 text-xl font-semibold rounded cursor-pointer ">
+                  {item.quantity}
+                </p>
+              ))}
               <p
                 className="border-2 border-slate-400 px-3 text-xl font-bold rounded cursor-pointer"
                 onClick={handleItemQuantityIncrement}

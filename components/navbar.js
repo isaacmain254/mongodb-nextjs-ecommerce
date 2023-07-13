@@ -6,22 +6,32 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
-import { useContext } from "react";
-import { CartQuantityContext } from "@/context/CartValueContext";
+import { useCartItems } from "@/utils/CartContextProvider";
+import { signIn, useSession } from "next-auth/react";
+import Logout from "./logout";
 
 const Navbar = () => {
   const [searchText, setSearchText] = useState("");
-  const { itemQuantity } = useContext(CartQuantityContext);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const { data: session } = useSession();
 
+  const cartItems = useCartItems();
+  const cartQuantity = cartItems.cart.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
   // handle submit button
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setSearchText("");
   };
+  if (session) {
+    console.log(session);
+  }
 
   return (
     <header className=" w-full bg-gray-300 z-10 fixed top-0">
-      <div className="flex  flex-row  w-11/12 mx-auto justify-between items-center ">
+      <div className="flex  flex-row  w-11/12 mx-auto justify-between items-center relative ">
         <Link href="/">
           <Image
             src="/images/shop-logo.png"
@@ -44,10 +54,29 @@ const Navbar = () => {
             <SearchIcon fontSize="large" />
           </div>
         </form>
-        <div className="flex flex-row gap-4">
-          <button>login</button>
+        <div className=" flex flex-row gap-4 items-center">
+          {session ? (
+            <div className="group relative flex flex-col gap-6">
+              <div className="flex gap-3 items-center bg-gray-200 rounded py-1 px-3  hover:shadow hover:shadow-gray-50">
+                <img
+                  src={session.user?.image}
+                  alt="user profile"
+                  className="w-10 h-10 rounded-full"
+                />
+                <span>{session.user?.name}</span>
+              </div>
+              <Logout className="absolute invisible group-hover:visible z-50" />
+            </div>
+          ) : (
+            <button
+              className="bg-gray-200 border border-gray-200 rounded px-5 py-1  hover:shadow hover:shadow-gray-50"
+              onClick={() => signIn()}
+            >
+              login
+            </button>
+          )}
           <Link href="/cart">
-            <Badge badgeContent={itemQuantity} color="warning">
+            <Badge badgeContent={cartQuantity} color="warning">
               <ShoppingCartOutlined />
             </Badge>
           </Link>

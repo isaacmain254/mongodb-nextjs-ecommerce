@@ -2,8 +2,7 @@ import Navbar from "@/components/navbar";
 import "./globals.css";
 import { Inter, Poppins, Roboto_Serif } from "next/font/google";
 import Footer from "@/components/Footer";
-import ItemQuantityeContext from "@/context/CartValueContext";
-import CartContextProvider from "@/utils/CartContextProvider";
+import Providers from "@/utils/Providers";
 
 const inter = Inter({
   weight: ["300", "400"],
@@ -36,13 +35,11 @@ export default function RootLayout({ children }) {
       <body
         className={`${inter.variable} ${roboto_serif.variable} ${poppins.variable}`}
       >
-        <CartContextProvider>
-          <ItemQuantityeContext>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
-          </ItemQuantityeContext>
-        </CartContextProvider>
+        <Providers>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
