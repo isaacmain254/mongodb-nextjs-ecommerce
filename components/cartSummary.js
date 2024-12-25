@@ -1,6 +1,8 @@
 import React from "react";
-
+import { useSelector, useDispatch } from "react-redux";
+import { selectCartTotalPrice } from "@/store/cartSlice";
 export default function CartSummary() {
+  const totalPrice = useSelector(selectCartTotalPrice);
   return (
     <>
       <div className="bg-gray-100 ">
@@ -12,7 +14,7 @@ export default function CartSummary() {
         <div>
           <div className="flex justify-between px-5 py-2 text-gray-600">
             <p>Order total</p>
-            <p className="font-semibold ">$100</p>
+            <p className="font-semibold ">${totalPrice}</p>
           </div>
           <div className="flex justify-between px-5 py-2 text-gray-600">
             <p>Shipping</p>
@@ -20,7 +22,7 @@ export default function CartSummary() {
           </div>
           <div className="flex justify-between px-5 py-2 my-4 text-gray-800 font-semibold bg-gray-300">
             <p>Total </p>
-            <p className="font-semibold ">$500</p>
+            <p className="font-semibold ">${totalPrice}</p>
           </div>
         </div>
       </div>

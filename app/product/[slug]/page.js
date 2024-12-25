@@ -10,43 +10,57 @@ import { products } from "@/lib/products";
 import { useCartDispatch, useCartItems } from "@/utils/CartContextProvider";
 import { CartQuantityContext } from "@/utils/CartValueContext";
 import ProductGallery from "@/components/ProductGallery";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToCart,
+  increaseQuantity,
+  decreaseQuantity,
+} from "@/store/cartSlice";
 
 let cartItemId = 1;
 
 // const Product = async () => {
 export default function Product() {
-  const dispatch = useCartDispatch();
-  const cartItems = useCartItems();
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  // const dispatch = useCartDispatch();
+  // const cartItems = useCartItems();
 
-  const { itemQuantity, setItemQuantity } = useContext(CartQuantityContext);
+  // const { itemQuantity, setItemQuantity } = useContext(CartQuantityContext);
   // Get item id from the url
   const params = useParams();
   const Slug = params.slug;
   console.log("slug", Slug);
+  const findProductBySlug = (slug) => {
+    return products.find((product) => product.slug === slug);
+  };
 
+  const product = findProductBySlug(Slug);
+  // Get the quantity of the current product in the cart
+  const getQuantity = () => {
+    const item = cartItems.find((item) => item.id === product.id);
+    return item ? item.quantity : 0;
+  };
   // Increment quantity
   const handleItemQuantityIncrement = () => {
-    setItemQuantity((value) => value + 1);
-    dispatch({
-      type: "ADD_TO_CART",
-      payload: { ...product, quantity: itemQuantity },
-    });
+    dispatch(increaseQuantity({ id: product.id }));
   };
 
   // decrement item quantity
   const handleItemQuantityDecrease = () => {
-    if (itemQuantity <= 0) {
-      return;
-    }
-    setItemQuantity((value) => value - 1);
+    dispatch(decreaseQuantity({ id: product.id }));
   };
 
   // handle ADD TO CART button click
   function handleAddToCartButtonClick() {
-    if (itemQuantity === 0) {
-      setItemQuantity((value) => value + 1);
-    }
-    return;
+    dispatch(
+      addToCart({
+        id: product.id,
+        name: product.title,
+        image: product.images[0],
+        price: product.price,
+      })
+    );
   }
 
   // function for changing the current displayed image
@@ -59,12 +73,6 @@ export default function Product() {
   // const prod = productDetails.products;
   // console.log(prod);
 
-  const findProductBySlug = (slug) => {
-    return products.find((product) => product.slug === slug);
-  };
-
-  const product = findProductBySlug(Slug);
-  console.log("product", product);
   if (!product) {
     return <div>Page Not Found</div>;
   }
@@ -112,14 +120,10 @@ export default function Product() {
               >
                 -
               </p>
-              {cartItems.cart.map((item, index) => (
-                <p
-                  key={index}
-                  className="border-2 border-slate-400 px-3 text-xl font-semibold rounded cursor-pointer "
-                >
-                  {item.quantity}
-                </p>
-              ))}
+
+              <span className="border-2 border-slate-400 px-3 text-xl font-semibold rounded cursor-pointer ">
+                {getQuantity()}
+              </span>
               <p
                 className="border-2 border-slate-400 px-3 text-xl font-bold rounded cursor-pointer"
                 onClick={handleItemQuantityIncrement}
@@ -129,9 +133,9 @@ export default function Product() {
             </div>
             <button
               className="w-64 my-9 rounded  py-2 bg-black opacity-90 text-white "
-              onClick={addToCartHandler}
+              onClick={handleAddToCartButtonClick}
             >
-              ADD TO CART
+              {getQuantity() === 0 ? "Add to Cart" : "Already in Cart"}
             </button>
           </div>
         </div>

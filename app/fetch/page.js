@@ -22,9 +22,9 @@ async function Fetch() {
         </p>
       </div>
       <ul>
-        {datas.map((data) => (
+        {/* {datas.map((data) => (
           <li>{data.name}</li>
-        ))}
+        ))} */}
       </ul>
     </section>
   );

@@ -9,17 +9,20 @@ import MailIcon from "@mui/icons-material/Mail";
 import { useCartItems } from "@/utils/CartContextProvider";
 // import { signIn, useSession } from "next-auth/react";
 import Logout from "./logout";
+import { useSelector } from "react-redux";
+import { selectCartTotalItems } from "@/store/cartSlice";
 
 const Navbar = () => {
   const [searchText, setSearchText] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const totalItems = useSelector(selectCartTotalItems);
   // const { data: session } = useSession();
 
-  const cartItems = useCartItems();
-  const cartQuantity = cartItems.cart.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
+  // const cartItems = useCartItems();
+  // const cartQuantity = cartItems.cart.reduce(
+  //   (total, item) => total + item.quantity,
+  //   0
+  // );
   // handle submit button
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -76,7 +79,7 @@ const Navbar = () => {
             </button>
           )} */}
           <Link href="/cart">
-            <Badge badgeContent={cartQuantity} color="warning">
+            <Badge badgeContent={totalItems} color="warning">
               <ShoppingCartOutlined />
             </Badge>
           </Link>

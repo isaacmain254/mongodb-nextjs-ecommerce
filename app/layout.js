@@ -3,6 +3,9 @@ import "./globals.css";
 import { Inter, Poppins, Roboto_Serif } from "next/font/google";
 import Footer from "@/components/Footer";
 import Providers from "@/utils/Providers";
+// import { Provider } from "react-redux";
+// import { store } from "@/store/store";
+// import Providers from "@/utils/Providers";
 
 const inter = Inter({
   weight: ["300", "400"],
