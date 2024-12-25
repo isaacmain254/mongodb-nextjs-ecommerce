@@ -8,6 +8,9 @@ import BlackBoots from "@/public/images/black-boots.jpeg";
 import DesertBoots from "@/public/images/desert-boots.jpeg";
 import { products } from "@/lib/products";
 import Link from "next/link";
+// import { getData } from "@/utils/fetchData";
+// import Brand from "@/models/product";
+// import dbConnect from "@/lib/mongoose/dbConnect";
 
 export default function Home() {
   const [ratingValue, setRatingValue] = useState(2);
@@ -18,6 +21,11 @@ export default function Home() {
   const handleRatingChange = () => {
     setRatingValue(ratingValue);
   };
+
+  //
+  // const data = await getProducts();
+  // console.log(typeof data.products);
+  // console.log(data.products);
 
   return (
     <>
@@ -47,6 +55,24 @@ export default function Home() {
             />
           </div>
         </div>
+      </section>
+
+      <section className="w-11/12 mx-auto my-9 h-auto bg-white">
+        <h3 className="text-center text-2xl font-sans my-6 ">OUR PRODUCTS</h3>
+        {/* <ul className="flex gap-12 justify-center mb-8 mt-3">
+          {data.products.map((item) => (
+            <li key={item._id}>
+              <Link href={`/product/${item.slug}`}>
+                <Item
+                  value={item.rating}
+                  imageSrc={item.images[0]}
+                  price={item.price}
+                  title={item.name}
+                />
+              </Link>
+            </li>
+          ))}
+        </ul> */}
       </section>
 
       {/* products array from the lib folder */}
@@ -189,3 +215,13 @@ export default function Home() {
     </>
   );
 }
+
+// Retrieve products from mongodb database
+// async function getProducts() {
+//   const data = await fetch("http://localhost:3000/api/products");
+//   if (!data.ok) {
+//     // This will activate the closest `error.js` Error Boundary
+//     throw new Error("Failed to fetch data");
+//   }
+//   return data.json();
+// }

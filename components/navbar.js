@@ -7,13 +7,13 @@ import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import { useCartItems } from "@/utils/CartContextProvider";
-import { signIn, useSession } from "next-auth/react";
+// import { signIn, useSession } from "next-auth/react";
 import Logout from "./logout";
 
 const Navbar = () => {
   const [searchText, setSearchText] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   const cartItems = useCartItems();
   const cartQuantity = cartItems.cart.reduce(
@@ -25,9 +25,9 @@ const Navbar = () => {
     e.preventDefault();
     setSearchText("");
   };
-  if (session) {
-    console.log(session);
-  }
+  // if (session) {
+  //   console.log(session);
+  // }
 
   return (
     <header className=" w-full bg-gray-300 z-10 fixed top-0">
@@ -55,7 +55,7 @@ const Navbar = () => {
           </div>
         </form>
         <div className=" flex flex-row gap-4 items-center">
-          {session ? (
+          {/* {session ? (
             <div className="group relative flex flex-col gap-6">
               <div className="flex gap-3 items-center bg-gray-200 rounded py-1 px-3  hover:shadow hover:shadow-gray-50">
                 <img
@@ -74,7 +74,7 @@ const Navbar = () => {
             >
               login
             </button>
-          )}
+          )} */}
           <Link href="/cart">
             <Badge badgeContent={cartQuantity} color="warning">
               <ShoppingCartOutlined />

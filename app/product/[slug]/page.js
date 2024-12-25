@@ -4,26 +4,25 @@ import Image from "next/image";
 import React, { useContext, useState } from "react";
 import Shoe from "@/public/images/Men's Barklay Canvas Plain .jpeg";
 import BlackBoot from "@/public/images/desert-boots.jpeg";
-import { useRef } from "react";
 import { Rating } from "@mui/material";
 import Button from "@/components/Button";
 import { products } from "@/lib/products";
 import { useCartDispatch, useCartItems } from "@/utils/CartContextProvider";
 import { CartQuantityContext } from "@/utils/CartValueContext";
+import ProductGallery from "@/components/ProductGallery";
 
 let cartItemId = 1;
 
-const Product = () => {
-  const [currentImage, setCurrentImage] = useState();
-  const imageref = useRef();
+// const Product = async () => {
+export default function Product() {
   const dispatch = useCartDispatch();
   const cartItems = useCartItems();
 
   const { itemQuantity, setItemQuantity } = useContext(CartQuantityContext);
-  console.log(itemQuantity);
   // Get item id from the url
   const params = useParams();
-  const Slug = params;
+  const Slug = params.slug;
+  console.log("slug", Slug);
 
   // Increment quantity
   const handleItemQuantityIncrement = () => {
@@ -54,12 +53,18 @@ const Product = () => {
   // const handleImageClick = (image) => {
   //   setCurrentImage(image);
   // };
-  const handleImageClick = () => {
-    imageref.current;
+
+  // get product
+  // const productDetails = await getProductDetails(Slug);
+  // const prod = productDetails.products;
+  // console.log(prod);
+
+  const findProductBySlug = (slug) => {
+    return products.find((product) => product.slug === slug);
   };
 
-  // get product data
-  const product = products.find(({ slug }) => slug === Slug.slug);
+  const product = findProductBySlug(Slug);
+  console.log("product", product);
   if (!product) {
     return <div>Page Not Found</div>;
   }
@@ -75,38 +80,14 @@ const Product = () => {
 
   return (
     <>
-      <section className="w-10/12  mt-20 mx-auto">
-        <div className="w-full h-full flex gap-10">
-          <div className="w-1/2 h-full ">
-            <div className="h-5/6 bg-white">
-              <Image
-                ref={imageref}
-                src={product.images[0]}
-                width={500}
-                height={500}
-                alt="my shoe"
-                className="w-full  h-full object-contain"
-              />
-            </div>
-            <div className=" h-1/6 flex justify-center">
-              <ul className="flex gap-4 ">
-                {product.images.map((image, index) => (
-                  <li key={index}>
-                    <Image
-                      src={image}
-                      width={64}
-                      height={64}
-                      alt="my shoe"
-                      onClick={handleImageClick}
-                      className="w-fit h-full object-cover aspect-square bg-white cursor-pointer"
-                    />
-                  </li>
-                ))}
-              </ul>
-            </div>
+      <section className="w-full lg:w-10/12  mt-28 mx-auto">
+        <p className="flex w-full h-full justify-center items-center"></p>
+        <div className="w-full h-full flex flex-col md:flex-row gap-10">
+          <div className="w-full h-full md:w-1/2 md:h-[500px]">
+            <ProductGallery product={product} />
           </div>
-          <div className="w-1/2">
-            <p className="text-xl font-sans font-medium my-4">category</p>
+          <div className="w-full md:w-1/2">
+            <p className="text-xl font-sans font-medium">category</p>
             <h1 className="text-black text-4xl opacity-80 font-semibold font-sans ">
               {product.title}
             </h1>
@@ -131,8 +112,11 @@ const Product = () => {
               >
                 -
               </p>
-              {cartItems.cart.map((item) => (
-                <p className="border-2 border-slate-400 px-3 text-xl font-semibold rounded cursor-pointer ">
+              {cartItems.cart.map((item, index) => (
+                <p
+                  key={index}
+                  className="border-2 border-slate-400 px-3 text-xl font-semibold rounded cursor-pointer "
+                >
                   {item.quantity}
                 </p>
               ))}
@@ -152,9 +136,34 @@ const Product = () => {
           </div>
         </div>
       </section>
-      {/* <p>{product.title}</p> */}
     </>
   );
-};
+}
 
-export default Product;
+// export default Product;
+
+async function getProductDetails(slug) {
+  const res = await fetch(`http://localhost:3000/api/product/${slug}`);
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch data");
+  }
+  console.log(res);
+  return res.json();
+}
+
+// async function getProductDetails(Slug) {
+//   await dbConnect();
+//   try {
+//     const res = await Brand.findOne({ slug: Slug }).lean();
+//     return res;
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// }
+// "@emotion/react": "^11.11.1",
+// "@emotion/styled": "^11.11.0",
+// "@mui/icons-material": "^5.11.16",
+// "@mui/material": "^5.13.5",
+// "next-auth": "^4.22.1"
+// "eslint-config-next": "15.1.2",
