@@ -35,7 +35,11 @@ export default function ShoppingCart() {
                   </tr>
                 </thead>
                 <tbody>
-                  {cartItems.length === 0 && <tr>Your cart is empty.</tr>}
+                  {cartItems.length === 0 && (
+                    <tr>
+                      <td>Your cart is empty.</td>
+                    </tr>
+                  )}
                   {cart.items.map((item) => (
                     <tr
                       className="bg-white border-b hover:bg-gray-50"

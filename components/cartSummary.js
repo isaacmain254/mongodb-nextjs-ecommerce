@@ -15,7 +15,7 @@ export default function CartSummary() {
   const handleCheckout = async () => {
     try {
       const stripe = await stripePromise;
-
+      console.log("Cart Items", cartItems);
       const response = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

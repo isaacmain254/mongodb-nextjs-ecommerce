@@ -1,3 +1,5 @@
+import dbConnect from "@/lib/mongoose/dbConnect";
+import Order from "@/models/order";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -7,7 +9,7 @@ const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 export async function POST(request) {
   const body = await request.text();
-  const sig = request.headers.get("stripe-signature") || "";
+  const sig = request.headers.get("stripe-signature");
   let event;
 
   try {
@@ -24,8 +26,29 @@ export async function POST(request) {
   switch (event.type) {
     case "checkout.session.completed":
       const session = event.data.object;
-      console.log("Session ID: ", session.id);
-      console.log("Payment Status: ", session.payment_status);
+
+      await dbConnect();
+      try {
+        const lineItems = await stripe.checkout.sessions.listLineItems(
+          session.id
+        );
+        const newOrder = new Order({
+          sessionId: session.id,
+          email: session.customer_details.email,
+          items: lineItems.data.map((item) => ({
+            name: item.description,
+            amount: item.amount_subtotal / 100,
+            quantity: item.quantity,
+          })),
+          total: session.amount_total / 100,
+          currency: session.currency,
+          paymentStatus: session.payment_status,
+        });
+
+        await newOrder.save();
+      } catch (error) {
+        console.error("Error saving order:", error);
+      }
       break;
     case "payment_intent.succeeded":
       const paymentIntent = event.data.object;
