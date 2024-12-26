@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
       >
         <Providers>
           <Navbar />
-          <main className="p-2 lg:p-0">{children}</main>
+          <main className="p-2 lg:p-0 mt-28">{children}</main>
           <Footer />
         </Providers>
       </body>

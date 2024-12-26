@@ -88,7 +88,7 @@ export default function Product() {
 
   return (
     <>
-      <section className="w-full lg:w-10/12  mt-28 mx-auto">
+      <section className="w-full lg:w-10/12 mx-auto">
         <p className="flex w-full h-full justify-center items-center"></p>
         <div className="w-full h-full flex flex-col md:flex-row gap-10">
           <div className="w-full h-full md:w-1/2 md:h-[500px]">

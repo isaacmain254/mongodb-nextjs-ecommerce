@@ -20,7 +20,7 @@ export default function ShoppingCart() {
   // const cartItems = useCartItems();
   return (
     <>
-      <section className="w-11/12 mx-auto mt-20">
+      <section className="w-11/12 mx-auto">
         <div className="flex h-auto w-full gap-6">
           <div className="w-4/5 h-full ">
             <div className="">

@@ -1,8 +1,34 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCartTotalPrice } from "@/store/cartSlice";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
+
 export default function CartSummary() {
   const totalPrice = useSelector(selectCartTotalPrice);
+  const cartItems = useSelector((state) => state.cart.items);
+
+  // handle stripe checkout
+  const handleCheckout = async () => {
+    try {
+      const stripe = await stripePromise;
+
+      const response = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: cartItems }),
+      });
+      const { sessionId } = await response.json();
+      // if (url) {
+      await stripe.redirectToCheckout({ sessionId });
+      // }
+    } catch (error) {
+      console.error("Checkout Error:", error);
+    }
+  };
   return (
     <>
       <div className="bg-gray-100 ">
@@ -29,6 +55,7 @@ export default function CartSummary() {
       <button
         className="inline-flex
        w-full justify-center items-center text-white text-base font-medium uppercase py-2  rounded bg-black hover:bg-gray-700 hover:shadow hover:shadow-gray-800"
+        onClick={handleCheckout}
       >
         checkout
       </button>

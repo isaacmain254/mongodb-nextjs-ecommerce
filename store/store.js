@@ -3,6 +3,9 @@ import cartReducer from "./cartSlice";
 
 // Load cart data from local storage
 const loadCartFromLocalStorage = () => {
+  if (typeof window === "undefined") {
+    return undefined;
+  }
   try {
     const serializedCart = localStorage.getItem("cart");
     return serializedCart ? JSON.parse(serializedCart) : undefined;
@@ -13,6 +16,9 @@ const loadCartFromLocalStorage = () => {
 };
 // Save cart data to local storage
 const saveCartToLocalStorage = (state) => {
+  if (typeof window === "undefined") {
+    return undefined;
+  }
   try {
     const serializedCart = JSON.stringify(state.cart);
     localStorage.setItem("cart", serializedCart);
