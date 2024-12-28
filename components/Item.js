@@ -4,11 +4,13 @@ import Image from "next/image";
 import React from "react";
 import Rating from "@mui/material/Rating";
 
-function Item({ imageSrc, title, value, onChange, price }) {
+function Item({ imageSrc, title, rating, onChange, price, label = "" }) {
   return (
-    <div className=" w-72 ">
+    <div className="w-72 hover:shadow-md hover:shadow-gray-400">
       <div className=" w-full h-72  relative bg-gray-800 rounded overflow-hidden">
-        <p className=" bg-cyan-800 px-4 text-white relative z-10 w-16  ">NEW</p>
+        <p className="w-fit px-2 bg-cyan-800 text-white relative z-10">
+          {label}
+        </p>
         <Image
           src={imageSrc}
           //   width={150}
@@ -18,11 +20,11 @@ function Item({ imageSrc, title, value, onChange, price }) {
           className="object-cover"
         />
       </div>
-      <div className="my-5 flex flex-col">
-        <p className="font-semibold text-center text-2xl opacity-80">{title}</p>
+      <div className="my-5 flex flex-col justify-center items-center">
+        <p className="font-semibold opacity-80">{title}</p>
         <Rating
           name="item-rating"
-          value={value}
+          value={rating}
           onChange={onChange}
           defaultValue={2.5}
           precision={0.5}

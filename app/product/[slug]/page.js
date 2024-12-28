@@ -95,7 +95,9 @@ export default function Product() {
             <ProductGallery product={product} />
           </div>
           <div className="w-full md:w-1/2">
-            <p className="text-xl font-sans font-medium">category</p>
+            <p className="text-xl font-sans font-medium">
+              category: {product.category}{" "}
+            </p>
             <h1 className="text-black text-4xl opacity-80 font-semibold font-sans ">
               {product.title}
             </h1>
@@ -103,7 +105,12 @@ export default function Product() {
               <p className="my-3 font-serif text-3xl font-light">
                 ${product.price}
               </p>
-              <Rating name="item-rating" defaultValue={2.5} precision={0.5} />
+              <Rating
+                value={product.rating}
+                name="item-rating"
+                defaultValue={2.5}
+                precision={0.5}
+              />
             </div>
             <p className="py-5">{product.description}</p>
             <p className="font-semibold opacity-90">Select color</p>

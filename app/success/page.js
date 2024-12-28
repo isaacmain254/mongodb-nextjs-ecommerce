@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 const Success = () => {
@@ -62,4 +62,11 @@ const Success = () => {
   );
 };
 
-export default Success;
+const SuccessPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Success />
+    </Suspense>
+  );
+};
+export default SuccessPage;

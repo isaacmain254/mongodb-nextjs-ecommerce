@@ -11,8 +11,7 @@ const Footer = () => {
         <footer className="w-full  items-center bg-white ">
           <div className="border-t-2 border-slate-600 w-11/12 mx-auto">
             <p className="text-center w-full py-3">
-              Made with <span className="text-red-600 text-lg"> &hearts;</span>{" "}
-              by Isaac
+              ©Footware 2024 Inc. All rights reserved.
             </p>
           </div>
 

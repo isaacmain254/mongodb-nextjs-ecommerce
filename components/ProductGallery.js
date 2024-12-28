@@ -32,7 +32,9 @@ export default function ProductGallery({ product }) {
                 height={64}
                 alt="thumbnail"
                 onClick={() => handleImageClick(image)}
-                className="w-fit h-full object-cover aspect-square bg-white cursor-pointer"
+                className={`w-fit h-full object-cover aspect-square bg-white cursor-pointer ${
+                  currentImage === image ? "border-2 border-gray-700" : ""
+                }`}
               />
             </li>
           ))}

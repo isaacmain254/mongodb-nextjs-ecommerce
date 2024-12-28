@@ -11,7 +11,7 @@ import { useCartItems } from "@/utils/CartContextProvider";
 import Logout from "./logout";
 import { useSelector } from "react-redux";
 import { selectCartTotalItems } from "@/store/cartSlice";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -19,6 +19,7 @@ const Navbar = () => {
   const [searchText, setSearchText] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const totalItems = useSelector(selectCartTotalItems);
+  const router = useRouter();
   // const { data: session } = useSession();
 
   // const cartItems = useCartItems();
@@ -29,6 +30,8 @@ const Navbar = () => {
   // handle submit button
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+
+    router.push(`/shop?search=${encodeURIComponent(searchText)}`);
     setSearchText("");
   };
   // if (session) {
@@ -49,21 +52,23 @@ const Navbar = () => {
               priority={true}
             />
           </Link>
+          {/* <div className="flex">
+            <Link href="/shop">Products</Link>
+          </div> */}
           <form
-            className="flex gap-4 items-center"
+            className="lg:w-1/3 flex items-center bg-white rounded-full p-1.5"
             onSubmit={handleSearchSubmit}
           >
+            <SearchIcon fontSize="small" />
             <input
               type="search"
               name="search"
               id="search"
               value={searchText}
+              placeholder="search..."
               onChange={(e) => setSearchText(e.target.value)}
-              className=" h-10 w-96 px-3 py-3 text-base text-slate-600 font-sans rounded-md outline-none"
+              className="w-full text-base text-slate-600 font-sans outline-none"
             />
-            <div className=" py-1 px-3 rounded-md bg-white hover:shadow hover:shadow-slate-600 ">
-              <SearchIcon fontSize="large" />
-            </div>
           </form>
 
           <div className=" flex flex-row gap-4 items-center">
