@@ -1,11 +1,11 @@
-import dbConnect from "@/lib/mongoose/dbConnect";
-import Brand from "@/models/product";
-import { DatasetLinked } from "@mui/icons-material";
-import React from "react";
+// import dbConnect from "@/lib/mongoose/dbConnect";
+// import Brand from "@/models/product";
+// import { DatasetLinked } from "@mui/icons-material";
+// import React from "react";
 
 async function Fetch() {
-  const datas = await getItems();
-  console.log(datas);
+  // const datas = await getItems();
+  // console.log(datas);
 
   return (
     <section className="w-10/12  mt-20 mx-auto">
@@ -30,10 +30,10 @@ async function Fetch() {
   );
 }
 
-export default Fetch;
+// export default Fetch;
 
-async function getItems() {
-  await dbConnect();
-  const dataItems = await Brand.find();
-  return dataItems;
-}
+// async function getItems() {
+//   await dbConnect();
+//   const dataItems = await Brand.find();
+//   return dataItems;
+// }
