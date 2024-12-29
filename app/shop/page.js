@@ -24,7 +24,7 @@ const Shop = () => {
       setProducts(data.products);
     };
     fetchProducts();
-  }, []);
+  }, [products]);
   // Merge search param to the current url
   const updateURL = (key, value) => {
     const currentParams = new URLSearchParams(searchParam.toString());

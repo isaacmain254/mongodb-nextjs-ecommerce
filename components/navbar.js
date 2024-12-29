@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import { selectCartTotalItems } from "@/store/cartSlice";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const Navbar = () => {
+const Header = () => {
   const pathname = usePathname();
   const isAdminPage = pathname.includes("admin");
   const [searchText, setSearchText] = useState("");
@@ -118,6 +118,14 @@ const Navbar = () => {
       </header>
       {/* )} */}
     </>
+  );
+};
+
+const Navbar = () => {
+  return (
+    <Suspense>
+      <Header />
+    </Suspense>
   );
 };
 
