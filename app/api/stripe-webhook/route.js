@@ -26,9 +26,9 @@ export async function POST(request) {
   switch (event.type) {
     case "checkout.session.completed":
       const session = event.data.object;
-
-      await dbConnect();
+      console.log("session", session);
       try {
+        await dbConnect();
         const lineItems = await stripe.checkout.sessions.listLineItems(
           session.id
         );
@@ -44,6 +44,13 @@ export async function POST(request) {
           currency: session.currency,
           paymentStatus: session.payment_status,
         });
+
+        // check whether an order already exist before saving
+        const existingOrder = await Order.findOne({ sessionId: session.id });
+        if (existingOrder) {
+          console.log("Order already exists:", existingOrder);
+          return;
+        }
 
         await newOrder.save();
       } catch (error) {

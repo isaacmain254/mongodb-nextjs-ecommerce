@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(request) {
   const searchParams = request.nextUrl.searchParams;
-  const sessionId = searchParams.get("session_id");
+  const sessionId = decodeURIComponent(searchParams.get("session_id"));
   console.log("Session Id", sessionId);
 
   if (!sessionId) {

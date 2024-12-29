@@ -7,7 +7,7 @@ const Success = () => {
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
 
-  const sessionId = searchParams.get("session_id");
+  const sessionId = decodeURIComponent(searchParams.get("session_id"));
 
   useEffect(() => {
     const fetchOrder = async () => {
