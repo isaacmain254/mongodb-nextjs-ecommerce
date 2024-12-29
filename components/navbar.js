@@ -11,7 +11,7 @@ import { useCartItems } from "@/utils/CartContextProvider";
 import Logout from "./logout";
 import { useSelector } from "react-redux";
 import { selectCartTotalItems } from "@/store/cartSlice";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -20,6 +20,20 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const totalItems = useSelector(selectCartTotalItems);
   const router = useRouter();
+  const searchParam = useSearchParams();
+
+  // Merge search param to the current url
+  const updateURL = (key, value) => {
+    const currentParams = new URLSearchParams(searchParam.toString());
+
+    if (value) {
+      currentParams.set(key, value);
+    } else {
+      currentParams.delete(key);
+    }
+
+    router.push(`/shop?${currentParams.toString()}`);
+  };
   // const { data: session } = useSession();
 
   // const cartItems = useCartItems();
@@ -30,8 +44,8 @@ const Navbar = () => {
   // handle submit button
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-
-    router.push(`/shop?search=${encodeURIComponent(searchText)}`);
+    updateURL("search", searchText);
+    // router.push(`/shop?search=${encodeURIComponent(searchText)}`);
     setSearchText("");
   };
   // if (session) {

@@ -1,15 +1,20 @@
 // get all products from mongodb
+
 import dbConnect from "@/lib/mongoose/dbConnect";
-import Brand from "@/models/product";
+import Product from "@/models/product";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
     await dbConnect();
-    const products = await Brand.find();
+    const products = await Product.find({}).sort({ createdAt: -1 });
 
     return NextResponse.json({ products });
   } catch (error) {
     console.log(error.message);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

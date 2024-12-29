@@ -1,39 +1,68 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
-import { products } from "@/lib/products";
+// import { products } from "@/lib/products";
 import Link from "next/link";
 import Item from "@/components/Item";
 
 const Shop = () => {
+  const [products, setProducts] = useState([]);
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedPrice, setSelectedPrice] = useState(null);
   const [filteredProducts, setFilteredProducts] = useState(products);
   const searchParam = useSearchParams();
   const search = searchParam.get("search");
   const size = searchParam.get("size");
+  const activePrice = searchParam.get("price");
   const router = useRouter();
 
+  // Fetch all products from the API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const res = await fetch(process.env.NEXT_PUBLIC_DOMAIN + "/api/products");
+      const data = await res.json();
+      setProducts(data.products);
+    };
+    fetchProducts();
+  }, []);
+  // Merge search param to the current url
+  const updateURL = (key, value) => {
+    const currentParams = new URLSearchParams(searchParam.toString());
+
+    if (value) {
+      currentParams.set(key, value);
+    } else {
+      currentParams.delete(key);
+    }
+
+    router.push(`/shop?${currentParams.toString()}`);
+  };
+
+  const deleteURL = (key) => {
+    setSelectedSize("");
+    selectedPrice("");
+    router.push("/shop");
+  };
   const sizes = ["5", "6", "7", "8", "9", "10", "11", "12", "13"];
   const prices = [
-    { label: "Under $100", value: 0 - 100 },
-    { label: "$100 - $200", value: 100 - 200 },
-    { label: "$200 - $300", value: 200 - 300 },
+    { label: "Under $10", value: "0-10" },
+    { label: "$10 - $20", value: "10-20" },
+    { label: "$20 - $30", value: "20-30" },
+    { label: "$30 - $40", value: "30-40" },
+    { label: "$40 - $50", value: "40-50" },
+    { label: "Over $50", value: "50" },
   ];
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
-    router.push(`/shop?size=${encodeURIComponent(size)}`);
-    // const params = new URLSearchParams(router.query);
-    // params.set("size", size);
-    // router.push(`/shop?${params.toString()}`);
+    updateURL("size", size);
   };
 
   const handlePriceChange = (price) => {
     setSelectedPrice(price);
-    router.push(`/shop?price=${encodeURIComponent(price)}`);
+    updateURL("price", price);
   };
-  const activePrice = searchParam.get("price");
+
   useEffect(() => {
     let filtered = products;
     if (search) {
@@ -44,12 +73,59 @@ const Shop = () => {
     if (selectedSize) {
       filtered = filtered.filter((product) => product.size === selectedSize);
     }
+
+    if (selectedPrice) {
+      if (selectedPrice === "0-10") {
+        filtered = filtered.filter((product) => product.price < 10);
+      } else if (selectedPrice === "10-20") {
+        filtered = filtered.filter(
+          (product) => product.price >= 10 && product.price < 20
+        );
+      } else if (selectedPrice === "20-30") {
+        filtered = filtered.filter(
+          (product) => product.price >= 20 && product.price < 30
+        );
+      } else if (selectedPrice === "30-40") {
+        filtered = filtered.filter(
+          (product) => product.price >= 30 && product.price < 40
+        );
+      } else if (selectedPrice === "40-50") {
+        filtered = filtered.filter(
+          (product) => product.price >= 40 && product.price < 50
+        );
+      } else if (selectedPrice === "50") {
+        filtered = filtered.filter((product) => product.price >= 50);
+      }
+    }
     setFilteredProducts(filtered);
-  }, [search, selectedSize]);
+  }, [search, selectedSize, selectedPrice]);
   return (
     <div className="flex gap-3 w-full md:w-11/12 mx-auto mb-5">
-      <div className="hidden lg:block w-52 bg-white">
-        <div className="py-5 px-1">
+      <div className="hidden lg:block w-52 h-fit bg-white py-5 px-2">
+        <button className="hover:text-gray-700" onClick={deleteURL}>
+          Clear filters
+        </button>
+        <div className="">
+          <p className="font-semibold text-center py-2">Prices</p>
+          <form className="">
+            {prices.map((price, index) => (
+              <div key={index} className="my-1 py-2">
+                <input
+                  type="radio"
+                  name="price"
+                  id={price.value}
+                  value={price.value}
+                  checked={price.value === activePrice}
+                  onChange={() => handlePriceChange(price.value)}
+                />
+                <label className="ps-3" htmlFor={price.value}>
+                  {price.label}
+                </label>
+              </div>
+            ))}
+          </form>
+        </div>
+        <div className="">
           <p className="font-semibold text-center py-2">Sizes</p>
           <div className="flex flex-wrap gap-2">
             {sizes.map((size) => (
@@ -67,41 +143,26 @@ const Shop = () => {
             ))}
           </div>
         </div>
-        {/* <div className="py-5 px-1">
-          <p className="font-semibold text-center py-2">Prices</p>
-          <form className="">
-            {prices.map((price, index) => (
-              <div key={index} className="py-2">
-                <input
-                  type="radio"
-                  name="price"
-                  id={price.value}
-                  value={price.value}
-                  // defaultChecked={activePrice === selectedPrice}
-                  // onChange={handlePriceChange}
-                  onSelect={() => handlePriceChange(price.value)}
-                />
-                <label htmlFor={price.value}>{price.label}</label>
-              </div>
-            ))}
-          </form>
-        </div> */}
       </div>
       <div className="flex-1">
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-          {filteredProducts.map((product) => (
-            <li key={product.id}>
-              <Link href={`/product/${product.slug}`}>
-                <Item
-                  rating={product.rating}
-                  imageSrc={product.images[0]}
-                  price={product.price}
-                  title={product.title}
-                />
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {products.length ? (
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+            {products.map((product) => (
+              <li key={product._id}>
+                <Link href={`/product/${product.slug}`}>
+                  <Item
+                    rating={product.rating}
+                    imageSrc={product.images[0]}
+                    price={product.price}
+                    title={product.name}
+                  />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="text-2xl text-center">No match found</div>
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Shoe from "@/public/images/Men's Barklay Canvas Plain .jpeg";
 import BlackBoot from "@/public/images/desert-boots.jpeg";
 import { Rating } from "@mui/material";
@@ -20,43 +20,63 @@ import {
 let cartItemId = 1;
 
 // const Product = async () => {
-export default function Product() {
+export default function Product({ params }) {
+  const { slug } = React.use(params);
+  // console.log("slug", slug);
+  const [product, setProduct] = useState();
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   // const dispatch = useCartDispatch();
   // const cartItems = useCartItems();
-
+  // const params = useParams();
+  // const slug = params.slug;
+  console.log("slug", slug);
   // const { itemQuantity, setItemQuantity } = useContext(CartQuantityContext);
+  // Fetch product details from the API
+  useEffect(() => {
+    setLoading(true);
+    const fetchProduct = async () => {
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_DOMAIN + `/api/product/${slug}`
+      );
+      const data = await res.json();
+      console.log("data", data);
+      setProduct(data);
+      setLoading(false);
+    };
+    fetchProduct();
+  }, [slug]);
   // Get item id from the url
-  const params = useParams();
-  const Slug = params.slug;
-  console.log("slug", Slug);
-  const findProductBySlug = (slug) => {
-    return products.find((product) => product.slug === slug);
-  };
+  // const params = useParams();
+  // const Slug = params.slug;
+  // console.log("slug", Slug);
+  // const findProductBySlug = (slug) => {
+  //   return products.find((product) => product.slug === slug);
+  // };
 
-  const product = findProductBySlug(Slug);
+  // const product = findProductBySlug(Slug);
   // Get the quantity of the current product in the cart
   const getQuantity = () => {
-    const item = cartItems.find((item) => item.id === product.id);
+    const item = cartItems.find((item) => item.id === product._id);
     return item ? item.quantity : 0;
   };
   // Increment quantity
   const handleItemQuantityIncrement = () => {
-    dispatch(increaseQuantity({ id: product.id }));
+    dispatch(increaseQuantity({ id: product._id }));
   };
 
   // decrement item quantity
   const handleItemQuantityDecrease = () => {
-    dispatch(decreaseQuantity({ id: product.id }));
+    dispatch(decreaseQuantity({ id: product._id }));
   };
 
   // handle ADD TO CART button click
   function handleAddToCartButtonClick() {
     dispatch(
       addToCart({
-        id: product.id,
-        name: product.title,
+        id: product._id,
+        name: product.name,
         image: product.images[0],
         price: product.price,
       })
@@ -74,7 +94,7 @@ export default function Product() {
   // console.log(prod);
 
   if (!product) {
-    return <div>Page Not Found</div>;
+    return;
   }
 
   // calling dispatch to update cart om 'ADD To CART' button click
@@ -99,7 +119,7 @@ export default function Product() {
               category: {product.category}{" "}
             </p>
             <h1 className="text-black text-4xl opacity-80 font-semibold font-sans ">
-              {product.title}
+              {product.name}
             </h1>
             <div className="flex justify-between items-center">
               <p className="my-3 font-serif text-3xl font-light">
@@ -150,31 +170,3 @@ export default function Product() {
     </>
   );
 }
-
-// export default Product;
-
-async function getProductDetails(slug) {
-  const res = await fetch(`http://localhost:3000/api/product/${slug}`);
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
-  }
-  console.log(res);
-  return res.json();
-}
-
-// async function getProductDetails(Slug) {
-//   await dbConnect();
-//   try {
-//     const res = await Brand.findOne({ slug: Slug }).lean();
-//     return res;
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// }
-// "@emotion/react": "^11.11.1",
-// "@emotion/styled": "^11.11.0",
-// "@mui/icons-material": "^5.11.16",
-// "@mui/material": "^5.13.5",
-// "next-auth": "^4.22.1"
-// "eslint-config-next": "15.1.2",

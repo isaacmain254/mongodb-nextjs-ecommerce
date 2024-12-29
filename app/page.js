@@ -58,22 +58,26 @@ export default function Home() {
       <section className="w-11/12 mx-auto my-9 h-auto bg-white py-3">
         <h3 className="text-center text-2xl font-sans my-6 ">NEW ARRIVALS</h3>
         <ul className="flex flex-wrap gap-12 justify-center mb-8 mt-3">
-          {products
-            .filter((product) => product.label === "new")
-            .slice(0, 4)
-            .map((product) => (
-              <li key={product.id}>
-                <Link href={`/product/${product.slug}`}>
-                  <Item
-                    rating={product.rating}
-                    imageSrc={product.images[0]}
-                    price={product.price}
-                    title={product.title}
-                    label={product.label}
-                  />
-                </Link>
-              </li>
-            ))}
+          {products.filter((product) => product.label === "new").length ? (
+            products
+              .filter((product) => product.label === "new")
+              .slice(0, 4)
+              .map((product) => (
+                <li key={product.id}>
+                  <Link href={`/product/${product.slug}`}>
+                    <Item
+                      rating={product.rating}
+                      imageSrc={product.images[0]}
+                      price={product.price}
+                      title={product.title}
+                      label={product.label}
+                    />
+                  </Link>
+                </li>
+              ))
+          ) : (
+            <div>There are no new products</div>
+          )}
         </ul>
         <div className="flex justify-center">
           <Button uri="/shop">View All Products</Button>
@@ -86,21 +90,26 @@ export default function Home() {
           FEATURED PRODUCTS
         </h3>
         <ul className="flex flex-wrap gap-12 justify-center mb-8 mt-3">
-          {products
-            .filter((product) => product.label === "featured")
-            .map((product) => (
-              <li key={product.id}>
-                <Link href={`/product/${product.slug}`}>
-                  <Item
-                    rating={product.rating}
-                    imageSrc={product.images[0]}
-                    price={product.price}
-                    title={product.title}
-                    label={product.label}
-                  />
-                </Link>
-              </li>
-            ))}
+          {products.filter((product) => product.label === "featured").length ? (
+            products
+              .filter((product) => product.label === "featured")
+              .slice(0, 4)
+              .map((product) => (
+                <li key={product.id}>
+                  <Link href={`/product/${product.slug}`}>
+                    <Item
+                      rating={product.rating}
+                      imageSrc={product.images[0]}
+                      price={product.price}
+                      title={product.title}
+                      label={product.label}
+                    />
+                  </Link>
+                </li>
+              ))
+          ) : (
+            <div>There are no featured products</div>
+          )}
         </ul>
         <div className="flex justify-center pb-3">
           <Button uri="/shop">View All Products</Button>
@@ -108,7 +117,7 @@ export default function Home() {
       </section>
 
       {/* collection section */}
-      <section className="w-full lg:w-11/12 mx-auto  h-auto my-9">
+      <section className="w-full lg:w-11/12 mx-auto  h-auto my-12">
         <div className="flex flex-col lg:flex-row gap-8 w-full">
           <div className="w-full lg:w-1/2 h-72 hover:shadow-xl hover:shadow-sky-200 ">
             <div className="flex w-full h-full bg-sky-100">
@@ -158,10 +167,10 @@ export default function Home() {
       </section>
 
       {/* subscribe  to news letter */}
-      <section className="w-11/12 mx-auto my-12">
+      <section className="w-11/12 mx-auto my-20 bg-white p-3">
         <div className="flex flex-col-reverse md:flex-row w-full gap-10">
           <div className="w-full md:w-2/3 flex flex-col gap-3">
-            <h3 cla>Nike SB </h3>
+            <h3 className="text-2xl">Nike SB </h3>
             <p>
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. A enim,
               accusantium asperiores corrupti assumenda nostrum voluptatibus

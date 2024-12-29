@@ -13,7 +13,6 @@ const ProductSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: [true, "Please enter the product description"],
   },
   price: {
     type: Number,
@@ -23,20 +22,35 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter product category"],
     enum: {
-      values: ["electonics", "Accessories", "Fashion"],
+      values: [
+        "Sneakers",
+        "Boots",
+        "Official",
+        "Loafers",
+        "Scandals",
+        "Casual",
+      ],
       message: "Please select the correct category",
     },
   },
   images: [String],
-  seller: {
-    type: String,
-  },
   stock: {
     type: Number,
   },
   rating: {
     type: Number,
     default: 0,
+  },
+  label: {
+    type: String,
+    enum: {
+      values: ["new", "hot", "featured"],
+      message: "Please select the correct label",
+    },
+  },
+  size: {
+    type: Number,
+    required: [true, "Please enter product size"],
   },
   createdAt: {
     type: Date,
@@ -64,7 +78,7 @@ ProductSchema.pre("save", function (next) {
 });
 
 // Return Product model if it exist else create a new Product  model
-const Brand =
+const Product =
   mongoose.models.Product || mongoose.model("Product", ProductSchema);
 
-export default Brand;
+export default Product;

@@ -1,20 +1,24 @@
 import dbConnect from "@/lib/mongoose/dbConnect";
+import Product from "@/models/product";
 import Brand from "@/models/product";
 import { NextResponse } from "next/server";
 
-export async function GET(request) {
-  await dbConnect();
+export async function GET(request, { params }) {
+  const slug = (await params).slug;
+  console.log("slug", slug);
+  if (!slug) {
+    return new Response("Invalid product slug", { status: 400 });
+  }
   try {
-    const { searchParams } = new URL(request.url);
-    const Slug = searchParams.get("slug");
-    console.log(Slug);
-    // const Slug = request.params;
-    // console.log(Slug);
-    const product = await Brand.findOne({ " slug": Slug });
-    if (product != null) return NextResponse.json({ product });
-    return NextResponse.json({ message: "Product not found" });
-    // return NextResponse.json({ res });
+    await dbConnect();
+
+    const product = await Product.findOne({ slug });
+    if (!product) {
+      return new Response("Product not found", { status: 404 });
+    }
+    return NextResponse.json(product);
   } catch (error) {
     console.log(error.message);
+    return new Response("Internal Server Error", { status: 500 });
   }
 }

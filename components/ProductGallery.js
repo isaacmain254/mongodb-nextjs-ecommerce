@@ -1,9 +1,10 @@
+"use client";
 import { useState } from "react";
 import Image from "next/image";
 
 export default function ProductGallery({ product }) {
   const [currentImage, setCurrentImage] = useState(product.images[0]);
-
+  // console.log("product", product);
   const handleImageClick = (image) => {
     setCurrentImage(image);
   };

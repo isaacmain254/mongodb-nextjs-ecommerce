@@ -1,54 +1,59 @@
-// import cloudinary from "@/lib/cloudinary";
-// import dbConnect from "@/lib/mongoose/dbConnect";
-// import Brand from "@/models/product";
+import dbConnect from "@/lib/mongoose/dbConnect";
+import Product from "@/models/product";
+import cloudinary from "@/utils/cloudinary";
+import multer from "multer";
+import { NextResponse } from "next/server";
 
-// import { NextResponse } from "next/server";
+// configure multer for file upload
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-// export async function POST(request) {
-//   // const data = await request.json();
-//   // console.log("data", data);
-//   try {
-//     const data = await request.json();
-//     console.log("data", data);
+export async function POST(req) {
+  try {
+    await dbConnect();
+    const formData = await req.formData();
+    const images = formData.getAll("images");
+    console.log(images);
+    if (!images || images.length === 0) {
+      return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
+    }
 
-//     // Ensure the image data is provided
-//     if (!data.image) {
-//       return NextResponse.json(
-//         { message: "No image data provided" },
-//         { status: 400 }
-//       );
-//     }
+    const imageUrls = [];
+    for (const image of images) {
+      const buffer = await image.arrayBuffer();
+      const uploadResult = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { folder: "E-commerce" },
+          (error, result) => {
+            if (error) {
+              reject(new Error("Cloudinary upload failed"));
+            } else {
+              resolve(result);
+            }
+          }
+        );
+        uploadStream.end(Buffer.from(buffer));
+      });
+      imageUrls.push(uploadResult.secure_url);
+    }
 
-//     // Upload the image to Cloudinary
-//     const uploadResult = await new Promise((resolve, reject) => {
-//       const uploadStream = cloudinary.uploader.upload_stream(
-//         { folder: "products" },
-//         (error, result) => {
-//           if (error) {
-//             console.error("Cloudinary upload error:", error);
-//             reject(new Error("Cloudinary upload failed"));
-//           } else {
-//             resolve(result);
-//           }
-//         }
-//       );
+    console.log("upload result", imageUrls);
+    const newProduct = new Product({
+      ...Object.fromEntries(formData),
+      images: imageUrls,
+    });
 
-//       // Decode the base64 image and pass it to the upload stream
-//       const buffer = Buffer.from(data.image, "base64");
-//       uploadStream.end(buffer);
-//     });
+    await newProduct.save();
 
-//     console.log("uploadResult", uploadResult);
-//     // await dbConnect();
-
-//     // const product = await Brand.create(data);
-//     // console.log(product);
-//     return NextResponse.json({ message: "Product added successfully" });
-//   } catch (error) {
-//     console.log(error.message);
-//     return NextResponse.json(
-//       { message: "Failed to add product", error: error.message },
-//       { status: 500 }
-//     );
-//   }
-// }
+    return NextResponse.json({
+      message: "Product data uploaded successfully",
+      data: newProduct,
+    });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Failed to upload image" },
+      { status: 500 }
+    );
+  }
+}

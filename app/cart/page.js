@@ -18,6 +18,7 @@ export default function ShoppingCart() {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   // const cartItems = useCartItems();
+  console.log("cart", cart);
   return (
     <>
       <section className="w-11/12 mx-auto">
@@ -39,7 +40,7 @@ export default function ShoppingCart() {
                     <td>Your cart is empty.</td>
                   </tr>
                 )}
-                {cart.items.map((item) => (
+                {cart.items.map((item, index) => (
                   <tr
                     className="bg-white border-b hover:bg-gray-50"
                     key={item.id}
