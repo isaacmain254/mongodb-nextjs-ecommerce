@@ -1,31 +1,14 @@
-"use client";
 import Button from "@/components/Button";
 import Item from "@/components/Item";
 import Image from "next/image";
-import React, { useState } from "react";
 import OfficialMen from "@/public/images/officials-men-2.jpg";
 import NikeSB from "@/public/images/nike-sb-3.jpg";
 import Jordan11 from "@/public/images/jordan11-3.jpg";
-import { products } from "@/lib/products";
 import Link from "next/link";
-// import { getData } from "@/utils/fetchData";
-// import Brand from "@/models/product";
-// import dbConnect from "@/lib/mongoose/dbConnect";
+import { getProducts } from "@/utils/fetchData";
 
-export default function Home() {
-  const [ratingValue, setRatingValue] = useState(2);
-
-  // count cart items after click
-
-  // handle Rating value change
-  const handleRatingChange = () => {
-    setRatingValue(ratingValue);
-  };
-
-  //
-  // const data = await getProducts();
-  // console.log(typeof data.products);
-  // console.log(data.products);
+export default async function Home() {
+  const products = await getProducts();
 
   return (
     <>
@@ -63,7 +46,7 @@ export default function Home() {
               .filter((product) => product.label === "new")
               .slice(0, 4)
               .map((product) => (
-                <li key={product.id}>
+                <li key={product._id}>
                   <Link href={`/product/${product.slug}`}>
                     <Item
                       rating={product.rating}
@@ -95,7 +78,7 @@ export default function Home() {
               .filter((product) => product.label === "featured")
               .slice(0, 4)
               .map((product) => (
-                <li key={product.id}>
+                <li key={product._id}>
                   <Link href={`/product/${product.slug}`}>
                     <Item
                       rating={product.rating}

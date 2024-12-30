@@ -6,8 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
-import { useCartItems } from "@/utils/CartContextProvider";
-// import { signIn, useSession } from "next-auth/react";
+
 import Logout from "./logout";
 import { useSelector } from "react-redux";
 import { selectCartTotalItems } from "@/store/cartSlice";

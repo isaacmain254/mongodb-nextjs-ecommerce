@@ -28,8 +28,8 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Nextjs and Mongodb Ecommerce",
-  description: "Next.js for the user interface and Mongodb Atlas for database",
+  title: "Men Sneakers and shoes",
+  description: "premium collection of men’s shoes",
 };
 
 export default function RootLayout({ children }) {

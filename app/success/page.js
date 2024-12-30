@@ -69,7 +69,13 @@ const Success = () => {
 
 const SuccessPage = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="w-full min-h-screen flex justify-center items-center">
+          Loading...
+        </div>
+      }
+    >
       <Success />
     </Suspense>
   );

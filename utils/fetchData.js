@@ -18,3 +18,11 @@ export const getProducts = async () => {
   const data = await res.json();
   return data.products;
 };
+
+export const getProductBySlug = async (slug) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_DOMAIN}/api/product/${slug}`
+  );
+  const data = await res.json();
+  return data;
+};
