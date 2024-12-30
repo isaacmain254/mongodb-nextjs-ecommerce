@@ -19,7 +19,7 @@ const Shop = () => {
   // Fetch all products from the API
   useEffect(() => {
     const fetchProducts = async () => {
-      const res = await fetch(process.env.NEXT_PUBLIC_DOMAIN + "/api/products");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/products`);
       const data = await res.json();
       setProducts(data.products);
     };

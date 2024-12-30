@@ -38,7 +38,7 @@ export default function Product({ params }) {
     setLoading(true);
     const fetchProduct = async () => {
       const res = await fetch(
-        process.env.NEXT_PUBLIC_DOMAIN + `/api/product/${slug}`
+        `${process.env.NEXT_PUBLIC_DOMAIN}/api/product/${slug}`
       );
       const data = await res.json();
       console.log("data", data);

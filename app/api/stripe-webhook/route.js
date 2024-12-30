@@ -10,6 +10,14 @@ const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 export async function POST(request) {
   const body = await request.text();
   const sig = request.headers.get("stripe-signature");
+
+  if (!sig) {
+    return NextResponse.json(
+      { error: "Missing stripe-signature header" },
+      { status: 400 }
+    );
+  }
+
   let event;
 
   try {

@@ -1,22 +1,27 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { clearCart } from "@/store/cartSlice";
 
 const Success = () => {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
+  const dispatch = useDispatch();
 
   const sessionId = decodeURIComponent(searchParams.get("session_id"));
 
   useEffect(() => {
     const fetchOrder = async () => {
       if (sessionId) {
-        const res = await fetch(`/api/order?session_id=${sessionId}`);
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_DOMAIN}/api/order?session_id=${sessionId}`
+        );
         const data = await res.json();
         setOrder(data);
-        console.log("Order", data);
         setLoading(false);
+        dispatch(clearCart());
       }
     };
 

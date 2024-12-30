@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 export async function GET(request) {
   const searchParams = request.nextUrl.searchParams;
   const sessionId = decodeURIComponent(searchParams.get("session_id"));
-  console.log("Session Id", sessionId);
 
   if (!sessionId) {
     return new Response("Session ID is required", { status: 400 });
@@ -15,7 +14,7 @@ export async function GET(request) {
     await dbConnect();
 
     const order = await Order.findOne({ sessionId });
-    console.log("Order", order);
+
     if (!order) {
       return new Response("Order not found", { status: 404 });
     }
