@@ -10,3 +10,11 @@ export async function getData() {
   // }
   return data.json();
 }
+
+export const getProducts = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/products`, {
+    cache: "no-store",
+  });
+  const data = await res.json();
+  return data.products;
+};

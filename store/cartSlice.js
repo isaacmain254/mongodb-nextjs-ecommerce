@@ -37,9 +37,6 @@ const cartSlice = createSlice({
     },
     clearCart(state) {
       state.items = [];
-      // if (typeof window !== "undefined") {
-      //   localStorage.removeItem("cart");
-      // }
     },
   },
 });

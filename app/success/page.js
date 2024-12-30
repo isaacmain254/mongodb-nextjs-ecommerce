@@ -54,7 +54,7 @@ const Success = () => {
                 <td className="px-6 py-3">${item.amount}</td>
               </tr>
             ))}
-            <tr className="border-b border-gray-300">
+            <tr className="border-b border-gray-300 font-semibold">
               <td className="px-6 py-3">Total</td>
               <td className="px-6 py-3"></td>
               <td className="px-6 py-3"></td>

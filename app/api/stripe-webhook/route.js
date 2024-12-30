@@ -1,6 +1,6 @@
 import dbConnect from "@/lib/mongoose/dbConnect";
 import Order from "@/models/order";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
