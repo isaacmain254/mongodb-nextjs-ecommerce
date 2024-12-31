@@ -29,7 +29,7 @@ const poppins = Poppins({
 
 export const metadata = {
   title: "Men Sneakers and shoes",
-  description: "premium collection of men’s shoes",
+  description: "Premium collection of men’s shoes",
 };
 
 export default function RootLayout({ children }) {

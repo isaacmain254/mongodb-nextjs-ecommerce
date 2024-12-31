@@ -3,18 +3,16 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Admin dashboard",
-  description: "Next.js for the user interface and Mongodb Atlas for database",
+  description: "Admin dashboard for Men Sneakers and shoes e-commerce",
 };
 
 export default function AdminLayout({ children }) {
   return (
-    <div className="grid grid-cols-12 w-11/12 mx-auto -mt-8">
-      <div className="grid-cols-2 border border-red-500">
+    <div className="flex gap-3 w-11/12 mx-auto -mt-8">
+      <div className="w-44 p-2 bg-gray-300 rounded-md">
         <Sidebar />
       </div>
-      <main className="grid-cols-10 w-full border border-green-500">
-        {children}
-      </main>
+      <main className="flex-1 w-full p-2 rounded-md bg-white">{children}</main>
     </div>
   );
 }
