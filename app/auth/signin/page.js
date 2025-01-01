@@ -20,7 +20,7 @@ const SignIn = () => {
           />
         </form>
         <p className="text-center pt-3">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/auth/signup" className="underline">
             Sign In
           </Link>
