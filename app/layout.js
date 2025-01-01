@@ -3,9 +3,8 @@ import "./globals.css";
 import { Inter, Poppins, Roboto_Serif } from "next/font/google";
 import Footer from "@/components/Footer";
 import Providers from "@/utils/Providers";
-// import { Provider } from "react-redux";
-// import { store } from "@/store/store";
-// import Providers from "@/utils/Providers";
+import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({
   weight: ["300", "400"],
@@ -42,6 +41,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           <main className="p-2 lg:p-0 mt-28">{children}</main>
           <Footer />
+          <ToastContainer />
         </Providers>
       </body>
     </html>
