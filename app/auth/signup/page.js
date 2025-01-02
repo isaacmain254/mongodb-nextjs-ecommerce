@@ -42,7 +42,8 @@ const SignUp = () => {
         setErrors({});
       }
     } catch (error) {
-      console.log("Error", error);
+      // console.log("Error", error);
+      return toast("Internal Server Error");
     }
   };
   return (
