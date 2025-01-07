@@ -2,9 +2,9 @@
 
 import { store } from "@/store/store";
 import { Provider } from "react-redux";
+// import { SessionProvider } from "next-auth/react";
 
 // import React from "react";
-// // import { SessionProvider } from "next-auth/react";
 // import CartContextProvider from "./CartContextProvider";
 // import ItemQuantityeContext from "./CartValueContext";
 
@@ -19,5 +19,9 @@ import { Provider } from "react-redux";
 // }
 
 export default function Providers({ children }) {
-  return <Provider store={store}>{children}</Provider>;
+  return (
+    // <SessionProvider>
+    <Provider store={store}>{children}</Provider>
+    // </SessionProvider>
+  );
 }

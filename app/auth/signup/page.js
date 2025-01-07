@@ -27,13 +27,10 @@ const SignUp = () => {
       return;
     }
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_DOMAIN}/api/auth/signup`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const res = await fetch(`${process.env.NEXT_PUBLIC_DOMAIN}/api/signup`, {
+        method: "POST",
+        body: formData,
+      });
       const responseData = await res.json();
       toast(responseData.message);
       // clear formdata

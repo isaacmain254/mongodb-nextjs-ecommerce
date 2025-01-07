@@ -2,49 +2,61 @@
 import Input from "@/components/Input";
 import { signInSchema } from "@/lib/zod";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { login } from "./signin-action";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const SignIn = () => {
   const [errors, setErrors] = useState({});
+  const formRef = useRef();
+  const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (formData) => {
+    const rawData = {
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+    console.log("rawData", rawData);
     // e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
+    // const formData = new FormData(e.target);
+    // const data = Object.fromEntries(formData);
+
     // Validate the data using signInSchema
-    const validationResult = signInSchema.safeParse(data);
-    console.log("validationResult", validationResult);
+    // const validationResult = signInSchema.safeParse(rawData);
+    // console.log("validationResult", validationResult);
 
-    if (!validationResult.success) {
-      const validationErrors = validationResult.error.errors.reduce(
-        (acc, err) => {
-          acc[err.path[0]] = err.message;
-          return acc;
-        },
-        {}
-      );
-      console.log("validationErrors", validationErrors);
-      setErrors(validationErrors);
-      return;
-    }
+    // if (!validationResult.success) {
+    //   const validationErrors = validationResult.error.errors.reduce(
+    //     (acc, err) => {
+    //       acc[err.path[0]] = err.message;
+    //       return acc;
+    //     },
+    //     {}
+    //   );
+    //   console.log("validationErrors", validationErrors);
+    //   setErrors(validationErrors);
+    //   return;
+    // }
 
-    try {
-      const response = await login(formData);
-      console.log("response", response);
-      toast(response.message);
-      if (response.type === "SUCCESS") {
-        // Clear form data and errors
-        // fo.target.reset();
-        setErrors({});
-      } else if (response.errors) {
-        setErrors(response.errors);
-      }
-    } catch (error) {
-      console.log("Error", error);
-      toast("Something went wrong, please try again.");
+    // try {
+    const response = await login(formData);
+    console.log("response", response);
+    toast(response.message);
+    // router.push("/");
+    if (response.success) {
+      // Clear form data and errors
+      formRef.current.reset();
+      // fo.target.reset();
+      // setErrors({});
+      router.push("/admin");
+    } else if (response.errors) {
+      setErrors(response.errors);
     }
+    // } catch (error) {
+    //   console.log("Error", error);
+    //   toast("Something went wrong, please try again.");
+    // }
   };
 
   return (
@@ -54,11 +66,11 @@ const SignIn = () => {
           <h1 className="py-3 text-2xl">Sign In</h1>
           <p>Please enter your information to login</p>
         </div>
-        <form className="flex flex-col" action={handleSubmit}>
+        <form className="flex flex-col" action={handleSubmit} ref={formRef}>
           <Input type="email" name="email" />
-          {errors.email && <p className="text-red-500">{errors.email}</p>}
+          {/* {errors.email && <p className="text-red-500">{errors.email}</p>} */}
           <Input type="password" name="password" className="mb-3" />
-          {errors.password && <p className="text-red-500">{errors.password}</p>}
+          {/* {errors.password && <p className="text-red-500">{errors.password}</p>} */}
           <input
             type="submit"
             value="Login"
