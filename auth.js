@@ -1,9 +1,10 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-// import dbConnect from "@/lib/mongoose/dbConnect";
+import dbConnect from "@/lib/mongoose/dbConnect";
 import { verifyPassword } from "./lib/password-hash";
-import { getUserFromDB } from "./utils/getUserFromDB";
-// import User from "@/models/user";
+import User from "./models/user";
+// import { getUserFromDB } from "./utils/getUserFromDB";
+
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -25,10 +26,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
         try {
           // connect to mongodb database
-          // await dbConnect();
-          user = await getUserFromDB(email);
-          console.log("User found in the database", user);
-          //user = await User.findOne({ email: email }); //.select("+password");
+          await dbConnect();
+          // find the user with the email
+          user = await User.findOne({ email: email }).select("+password");
           if (!user) {
             throw new Error("Invalid email or password");
           }

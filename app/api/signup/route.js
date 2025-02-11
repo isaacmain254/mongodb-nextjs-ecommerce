@@ -2,8 +2,9 @@ import { signUpSchema } from "@/lib/zod";
 import { NextResponse } from "next/server";
 import { hashPassword } from "@/lib/password-hash";
 import dbConnect from "@/lib/mongoose/dbConnect";
-import { getUserFromDB, getUserModel } from "@/utils/getUserFromDB";
-// import User from "@/models/user";
+import User from "@/models/user";
+// import { getUserFromDB, getUserModel } from "@/utils/getUserFromDB";
+
 
 export async function POST(req) {
   const formData = await req.formData();
@@ -35,8 +36,7 @@ export async function POST(req) {
       email,
       password: hashedPassword,
     };
-    // const existingUser = await User.findOne({ email });
-    const existingUser = await getUserFromDB(email);
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return NextResponse.json(
         { message: "User already exists with this email" },
@@ -44,8 +44,6 @@ export async function POST(req) {
       );
     }
 
-    // get the user model
-    const User = getUserModel();
     await User.create(newUser);
     return Response.json(
       { message: "User created successfully" },
