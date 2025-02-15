@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import { SessionProvider } from "next-auth/react";
 
 // export const metadata = {
 //   title: "Admin dashboard",
@@ -17,7 +18,7 @@ export default function AdminLayout({ children }) {
     setShowSidebar(!showSidebar);
   };
   return (
-    <>
+    <SessionProvider>
       <div className="block md:hidden text-xl" onClick={handleMenuToggle}>
         {showSidebar ? (
           <CloseIcon sx={{ fontSize: 40 }} />
@@ -37,6 +38,6 @@ export default function AdminLayout({ children }) {
           {children}
         </main>
       </div>
-    </>
+    </SessionProvider>
   );
 }
