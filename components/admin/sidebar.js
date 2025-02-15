@@ -22,6 +22,11 @@ const navLinks = [
     to: "/customers",
     icon: <PeopleIcon />,
   },
+  {
+    title: "Orders",
+    to: "/orders",
+    icon: <InventoryIcon />,
+  },
 ];
 
 const Sidebar = () => {

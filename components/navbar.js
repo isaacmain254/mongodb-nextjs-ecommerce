@@ -33,7 +33,7 @@ const Header = () => {
 
     router.push(`/shop?${currentParams.toString()}`);
   };
-  // const { data: session } = useSession();
+  // const { data: session } = useSession()
 
   // const cartItems = useCartItems();
   // const cartQuantity = cartItems.cart.reduce(
@@ -50,6 +50,7 @@ const Header = () => {
   // if (session) {
   //   console.log(session);
   // }
+  //  console.log('session', session);
 
   return (
     <>
@@ -85,26 +86,27 @@ const Header = () => {
           </form>
 
           <div className=" flex flex-row gap-4 items-center">
-            {/* {session ? (
-            <div className="group relative flex flex-col gap-6">
-              <div className="flex gap-3 items-center bg-gray-200 rounded py-1 px-3  hover:shadow hover:shadow-gray-50">
-                <img
-                  src={session.user?.image}
-                  alt="user profile"
-                  className="w-10 h-10 rounded-full"
-                />
-                <span>{session.user?.name}</span>
-              </div>
-              <Logout className="absolute invisible group-hover:visible z-50" />
-            </div>
-          ) : (
-            <button
-              className="bg-gray-200 border border-gray-200 rounded px-5 py-1  hover:shadow hover:shadow-gray-50"
-              onClick={() => signIn()}
-            >
-              login
-            </button>
-          )} */}
+            {/* {isAdminPage &&
+              (session ? (
+                <div className="group relative flex flex-col gap-6">
+                  <div className="flex gap-3 items-center bg-gray-200 rounded py-1 px-3  hover:shadow hover:shadow-gray-50">
+                    <img
+                      src={session.user?.image}
+                      alt="user profile"
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <span>{session.user?.name}</span>
+                  </div>
+                  <Logout className="absolute invisible group-hover:visible z-50" />
+                </div>
+              ) : (
+                <Link
+                  className="bg-gray-200 border border-gray-200 rounded px-5 py-1  hover:shadow hover:shadow-gray-50"
+                  href='/auth/signin'
+                >
+                  login
+                </Link>
+              ))} */}
             {!isAdminPage && (
               <Link href="/cart">
                 <Badge badgeContent={totalItems} color="warning">

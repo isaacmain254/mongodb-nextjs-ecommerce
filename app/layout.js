@@ -31,14 +31,14 @@ export const metadata = {
   description: "Premium collection of men’s shoes",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
         className={`${inter.variable} ${roboto_serif.variable} ${poppins.variable}`}
       >
         <Providers>
-          <Navbar />
+          <Navbar  />
           <main className="p-2 lg:p-0 mt-28">{children}</main>
           <Footer />
           <ToastContainer />

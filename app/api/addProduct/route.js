@@ -48,6 +48,7 @@ export async function POST(req) {
     return NextResponse.json({
       message: "Product data uploaded successfully",
       data: newProduct,
+      status: 201,
     });
   } catch (error) {
     console.error(error);

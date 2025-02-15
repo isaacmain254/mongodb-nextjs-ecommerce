@@ -1,4 +1,9 @@
-export { auth as middleware } from "@/auth";
+// export { auth } from "@/auth";
+
+import { auth } from "@/auth";
+import { NextResponse } from "next/server";
+
+const protectedRoutes = ["/admin"];
 
 export const config = {
   unstable_allowDynamic: [
@@ -7,3 +12,18 @@ export const config = {
     "**/node_modules/**",
   ],
 };
+
+export default auth(async (req) => {
+  const session = await auth();
+
+  const isProtectedRoute = protectedRoutes.some((prefix) =>
+    req.nextUrl.pathname.startsWith(prefix)
+  );
+
+  if (!session && isProtectedRoute) {
+    const absoluteURL = new URL("/auth/signin", req.nextUrl.origin);
+    return NextResponse.redirect(absoluteURL.toString());
+  }
+
+  return NextResponse.next();
+});

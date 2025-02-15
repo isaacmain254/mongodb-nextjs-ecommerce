@@ -2,12 +2,15 @@
 import Input from "@/components/Input";
 import { signUpSchema } from "@/lib/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [errors, setErrors] = useState({});
   const formRef = useRef(null);
+  const router = useRouter()
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -38,6 +41,7 @@ const SignUp = () => {
         formRef.current.reset();
         setErrors({});
       }
+      router.push('/auth/signin')
     } catch (error) {
       // console.log("Error", error);
       return toast("Internal Server Error");

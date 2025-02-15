@@ -7,7 +7,7 @@ const formatLabel = (label) => {
     .replace(/^./, (str) => str.toUpperCase());
 };
 
-const Input = ({ type = "text", name, className = "" }) => {
+const Input = ({ type = "text", name, className = "", accept="", multiple=false }) => {
   return (
     <>
       <label htmlFor="username" className="pt-3">
@@ -17,6 +17,8 @@ const Input = ({ type = "text", name, className = "" }) => {
         type={type}
         name={name}
         id={name}
+        multiple={multiple}
+        accept={accept}
         className={`p-2 rounded  text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${className}`}
       />
     </>
