@@ -1,7 +1,9 @@
+import dbConnect from "@/lib/mongoose/dbConnect";
 import Order from "@/models/order";
 import Link from "next/link";
 
 const Orders = async () => {
+  await dbConnect();
   const orders = await Order.find({}).sort({ updatedAt: -1 });
   console.log("orders", orders);
   return (
