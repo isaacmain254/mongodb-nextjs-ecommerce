@@ -18,7 +18,7 @@ export default function AdminLayout({ children }) {
     setShowSidebar(!showSidebar);
   };
   return (
-    <SessionProvider>
+    <>
       <div className="block md:hidden text-xl" onClick={handleMenuToggle}>
         {showSidebar ? (
           <CloseIcon sx={{ fontSize: 40 }} />
@@ -32,12 +32,12 @@ export default function AdminLayout({ children }) {
             showSidebar ? "block absolute z-30  bg-gray-900" : "hidden"
           }  md:block w-44 p-2 bg-gray-300 rounded-md`}
         >
-          <Sidebar />
+          <Sidebar handleClick={handleMenuToggle} />
         </div>
         <main className="flex-1 w-full min-h-[calc(100vh-78px)] p-2 rounded-md bg-white overflow-auto">
           {children}
         </main>
       </div>
-    </SessionProvider>
+    </>
   );
 }

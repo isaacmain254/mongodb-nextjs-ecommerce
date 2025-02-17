@@ -5,16 +5,14 @@ import React, { Suspense, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
 import Badge from "@mui/material/Badge";
-import MailIcon from "@mui/icons-material/Mail";
-import { useSession } from "next-auth/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Logout from "./logout";
 import { useSelector } from "react-redux";
 import { selectCartTotalItems } from "@/store/cartSlice";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const Header = () => {
-  const pathname = usePathname();
+const Navbar = ({ session }) => {
+const pathname = usePathname();
   const isAdminPage = pathname.includes("admin");
   const [searchText, setSearchText] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -34,7 +32,7 @@ const Header = () => {
 
     router.push(`/shop?${currentParams.toString()}`);
   };
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   // const cartItems = useCartItems();
   // const cartQuantity = cartItems.cart.reduce(
@@ -119,12 +117,12 @@ const Header = () => {
   );
 };
 
-const Navbar = () => {
+const NavbarWithSuspense = ({ session }) => {
   return (
     <Suspense>
-      <Header />
+      <Navbar session={session} />
     </Suspense>
   );
 };
 
-export default Navbar;
+export default NavbarWithSuspense;

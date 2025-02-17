@@ -4,7 +4,8 @@ import { Inter, Poppins, Roboto_Serif } from "next/font/google";
 import Footer from "@/components/Footer";
 import Providers from "@/utils/Providers";
 import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import { auth } from "@/auth";
+import NavbarWithSuspense from "@/components/navbar";
 
 const inter = Inter({
   weight: ["300", "400"],
@@ -32,13 +33,14 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
+  const session = await auth();
   return (
     <html lang="en">
       <body
         className={`${inter.variable} ${roboto_serif.variable} ${poppins.variable}`}
       >
         <Providers>
-          <Navbar  />
+          <NavbarWithSuspense session={session} />
           <main className="p-2 lg:p-0 mt-28">{children}</main>
           <Footer />
           <ToastContainer />

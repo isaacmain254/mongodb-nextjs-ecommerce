@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export const products = await getProducts();
 const Products = async () => {
+  const products = await getProducts();
   return (
     <>
       <Button uri="/admin/products/new">Add Product</Button>

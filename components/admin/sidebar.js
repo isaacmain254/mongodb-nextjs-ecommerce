@@ -29,8 +29,9 @@ const navLinks = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ handleClick }) => {
   const pathname = usePathname();
+
   return (
     <>
       <ul>
@@ -46,6 +47,7 @@ const Sidebar = () => {
             <Link
               href={`/admin/${navLink.to}`}
               className="flex items-center gap-2"
+              onClick={handleClick}
             >
               {navLink.icon}
               {navLink.title}

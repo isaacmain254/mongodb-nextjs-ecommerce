@@ -9,7 +9,7 @@ const Logout = () => {
         className="bg-gray-200 border border-gray-200 rounded px-5 py-1  hover:shadow hover:shadow-gray-50"
         onClick={() => signOut()}
       >
-        <LogoutIcon /> logout
+        <LogoutIcon sx={{ fontSize: 20 }} /> logout
       </button>
     </>
   );

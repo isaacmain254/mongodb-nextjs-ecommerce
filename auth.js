@@ -52,7 +52,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   pages: {
-    signIn: "/auth/signin", // Customize this to your sign-in page
-    // error: "/auth/error", // Customize this to your error page
+    signIn: "/auth/signin", 
+    error: "/auth/error", 
   },
 });
