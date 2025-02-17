@@ -48,10 +48,6 @@ const Header = () => {
     // router.push(`/shop?search=${encodeURIComponent(searchText)}`);
     setSearchText("");
   };
-  if (session) {
-    console.log(session);
-  }
-  console.log("session", session);
 
   return (
     <>

@@ -17,7 +17,6 @@ const SignIn = () => {
       email: formData.get("email"),
       password: formData.get("password"),
     };
-    console.log("rawData", rawData);
     // e.preventDefault();
     // const formData = new FormData(e.target);
     // const data = Object.fromEntries(formData);
@@ -39,24 +38,22 @@ const SignIn = () => {
     //   return;
     // }
 
-    // try {
+    try {
     const response = await login(formData);
     console.log("response", response);
     toast(response.message);
-    // router.push("/");
     if (response.success) {
       // Clear form data and errors
       formRef.current.reset();
-      // fo.target.reset();
-      // setErrors({});
+      setErrors({});
       router.push("/admin");
     } else if (response.errors) {
       setErrors(response.errors);
     }
-    // } catch (error) {
-    //   console.log("Error", error);
-    //   toast("Something went wrong, please try again.");
-    // }
+    } catch (error) {
+      console.log("Error", error);
+      toast("Something went wrong, please try again.");
+    }
   };
 
   return (
@@ -68,9 +65,9 @@ const SignIn = () => {
         </div>
         <form className="flex flex-col" action={handleSubmit} ref={formRef}>
           <Input type="email" name="email" />
-          {/* {errors.email && <p className="text-red-500">{errors.email}</p>} */}
+          {errors.email && <p className="text-red-500">{errors.email}</p>}
           <Input type="password" name="password" className="mb-3" />
-          {/* {errors.password && <p className="text-red-500">{errors.password}</p>} */}
+          {errors.password && <p className="text-red-500">{errors.password}</p>}
           <input
             type="submit"
             value="Login"

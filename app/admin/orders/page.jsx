@@ -1,11 +1,8 @@
-import dbConnect from "@/lib/mongoose/dbConnect";
-import Order from "@/models/order";
+import { getOrders } from "@/utils/getOrders";
 import Link from "next/link";
 
 const Orders = async () => {
-  await dbConnect();
-  const orders = await Order.find({}).sort({ updatedAt: -1 });
-  console.log("orders", orders);
+  const orders = await getOrders();
   return (
     <div className="w-full overflow-auto">
       <table className="table-auto text-left w-full">
